@@ -82,7 +82,7 @@ REM ## install puppet
 %GO% "cd /tmp ; wget http://apt.puppetlabs.com/puppet7-release-focal.deb"
 %GO% "apt install /tmp/puppet7-release-focal.deb && apt update"
 %GO% "apt install puppet-agent -y"
-move "enrolment.sh" "%DISTRO%\rootfs\usr\local\bin"
+move "enrolment.sh" "%DISTROFULL%\rootfs\usr\local\bin"
 
 REM ## ECHO [%TIME:~0,8%] Remove un-needed packages (~1m00s)
 REM ## %GO% "DEBIAN_FRONTEND=noninteractive apt-get -y purge apparmor apport bolt cloud-init cloud-initramfs-copymods cloud-initramfs-dyn-netconf cryptsetup cryptsetup-initramfs dmeventd finalrd fwupd initramfs-tools initramfs-tools-core irqbalance isc-dhcp-client klibc-utils kpartx libaio1 libarchive13 libdevmapper-event1.02.1 libdns-export1109 libefiboot1 libefivar1 libestr0 libfastjson4 libfwupd2 libfwupdplugin1 libgcab-1.0-0 libgpgme11 libgudev-1.0-0 libgusb2 libisc-export1105 libisns0 libjson-glib-1.0-0 libjson-glib-1.0-common libklibc liblvm2cmd2.03 libmspack0 libnuma1 libsgutils2-2 libsmbios-c2 libtss2-esys0 liburcu6 libxmlb1 libxmlsec1 libxmlsec1-openssl libxslt1.1 linux-base lvm2 lz4 mdadm multipath-tools open-iscsi open-vm-tools overlayroot plymouth plymouth-theme-ubuntu-text popularity-contest sbsigntool secureboot-db sg3-utils sg3-utils-udev snapd squashfs-tools thin-provisioning-tools tpm-udev zerofree ; apt-get -y autoremove --purge"  > ".\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Remove un-needed packages.log" 2>&1
@@ -99,9 +99,6 @@ ECHO [%TIME:~0,8%] XFCE 4.16 (~2m00s)
 
 ECHO [%TIME:~0,8%] Seamonkey and WebKit2GTK for WSL (~3m30s)
 %GO% "DEBIAN_FRONTEND=noninteractive apt-fast -y --allow-downgrades install seamonkey-mozilla-build epiphany-browser libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio /tmp/xWSL/webkit2gtk/*.deb ; apt-mark hold gir1.2-javascriptcoregtk-4.0 gir1.2-webkit2-4.0 libjavascriptcoregtk-4.0-18 libjavascriptcoregtk-4.0-bin libwebkit2gtk-4.0-37 webkit2gtk-driver ; update-alternatives --install /usr/bin/www-browser www-browser /usr/bin/seamonkey 100 ; update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/seamonkey 100 ; update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/seamonkey 100 ; cd /tmp/xWSL/deb ; wget -q https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb ; dpkg -i /tmp/xWSL/deb/chrome-remote-desktop_current_amd64.deb" > ".\logs\%TIME:~0,2%%TIME:~3,2%%TIME:~6,2% Seamonkey and WebKit2GTK for WSL1.log" 2>&1
-
-REM ## install script
-%GO% "bash /usr/local/bin/enrolment.sh"
 
 
 REM ## %GO% "apt-get -y install supertuxkart /tmp/multimc_1.4-1.deb"
@@ -172,6 +169,11 @@ ECHO Building Scheduled Task...
 POWERSHELL -C "$WAI = (whoami) ; (Get-Content .\rootfs\tmp\xWSL\xWSL.xml).replace('AAAA', $WAI) | Set-Content .\rootfs\tmp\xWSL\xWSL.xml"
 POWERSHELL -C "$WAC = (pwd)    ; (Get-Content .\rootfs\tmp\xWSL\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\rootfs\tmp\xWSL\xWSL.xml"
 SCHTASKS /Create /TN:%DISTRO% /XML .\rootfs\tmp\xWSL\xWSL.xml /F
+
+REM ## install script
+ECHO: Installing the puppet script. Please be patient
+%GO% "bash /usr/local/bin/enrolment.sh"
+
 ECHO:
 ECHO:      Start: %RUNSTART%
 ECHO:        End: %RUNEND%
