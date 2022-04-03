@@ -173,7 +173,7 @@ SCHTASKS /Create /TN:%DISTRO% /XML .\rootfs\tmp\xWSL\xWSL.xml /F
 
 REM ## install script
 ECHO: Installing the puppet script. Please be patient
-%GO% "bash /usr/local/bin/enrolment.sh"
+%GO% "sudo bash /usr/local/bin/enrolment.sh"
 
 ECHO:
 ECHO:      Start: %RUNSTART%
