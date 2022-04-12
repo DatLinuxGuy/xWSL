@@ -39,6 +39,9 @@ EOF
 mv /tmp/wsl.conf /etc/wsl.conf
 #echo "In 10 seconds the WSL image will now shutdown. You MUST wait 10 seconds before running WSL again. This will allow enough time for the hostname to change"
 touch /etc/namechange
+echo "WHEN YOU ARE IN WSL PLEASE RUN"
+ECHO "sudo bash /usr/local/bin/enrolment.sh"
+echo "TO FINISH INSTALLATION"
 #sleep 10
 #wsl.exe shutdown
 exit
