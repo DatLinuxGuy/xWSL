@@ -173,9 +173,14 @@ POWERSHELL -C "$WAI = (whoami) ; (Get-Content .\rootfs\tmp\xWSL\xWSL.xml).replac
 POWERSHELL -C "$WAC = (pwd)    ; (Get-Content .\rootfs\tmp\xWSL\xWSL.xml).replace('QQQQ', $WAC) | Set-Content .\rootfs\tmp\xWSL\xWSL.xml"
 SCHTASKS /Create /TN:%DISTRO% /XML .\rootfs\tmp\xWSL\xWSL.xml /F
 
-REM ## install script
+REM ## Install script
 ECHO: Installing the puppet script. Please be patient
 %GO% "sudo bash /usr/local/bin/enrolment.sh"
+%GO% "wsl.exe --shutdown"
+timeout /T 10 /NOBREAK > nul
+REM ## Start wsl again
+ECHO: Starting wsl again
+schtasks /run /tn %DISTRO%
 
 ECHO:
 ECHO:      Start: %RUNSTART%
