@@ -76,12 +76,13 @@ ECHO [%TIME:~0,8%] Git clone and update repositories (~1m15s)
 :APTRELY
 START /MIN /WAIT "Git Clone xWSL" %GO% "cd /tmp ; git clone -b %BRANCH% --depth=1 https://github.com/%GITORG%/%GITPRJ%.git"
 START /MIN /WAIT "Acquire XFCE 4.16 Keys" %GO% "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com EB563F93142986CE"
+START /MIN /WAIT "Acquire Mozilla Seamonkey Keys" %GO% "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2667CA5C"
 START /MIN /WAIT "Acquire Ubuntu Graphics Keys" %GO% "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 957D2708A03A4626"
 START /MIN /WAIT "apt-get update" %GO% "apt-get update 2> /tmp/apterr"
 FOR /F %%A in ("%DISTROFULL%\rootfs\tmp\apterr") do If %%~zA NEQ 0 GOTO APTRELY 
 
-REM ## START /MIN /WAIT "Acquire Mozilla Seamonkey Keys" %GO% "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2667CA5C"
-REM ## install puppet
+
+REM ## Install puppet
 %GO% "cd /tmp ; wget http://apt.puppetlabs.com/puppet7-release-focal.deb" 2>&1
 %GO% "apt install /tmp/puppet7-release-focal.deb && apt update " 2>&1
 %GO% "apt install puppet-agent -y"
