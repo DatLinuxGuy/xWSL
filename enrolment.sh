@@ -17,12 +17,10 @@ echo "new hostname has already been set"
 sleep 3
 else
 LoginName=$(ls /home/)
-echo $LoginName
 machinename=$(hostname)
-echo $machinename
 serial_number=$(shuf -i 0-10000 -n 1)
 cat /etc/hosts
-sed -i 's/$machinename/$LoginName-wsl-$serial_number/g' /etc/hosts
+sed -i "s/$machinename/$LoginName-wsl-$serial_number/g" /etc/hosts
 cat /etc/hosts
 >/tmp/wsl.conf
 cat >/tmp/wsl.conf <<EOF
