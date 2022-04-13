@@ -171,7 +171,3 @@ sudo apt install google-cloud-cli bazel -y
 
 # Finish
 echo -e "\033[0;32mThe Script is finished\n"
-
-sudo apt install google-cloud-cli bazel -y
-
-wsl.exe --shutdown
