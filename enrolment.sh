@@ -47,6 +47,9 @@ echo "TO FINISH INSTALLATION"
 exit
 fi
 
+sudo apt install libegl1-mesa libgl1-mesa-glx libxcb-xtest0 -y
+
+
 # install puppet 
 #wget http://apt.puppetlabs.com/puppet7-release-focal.deb -O /tmp/puppet7-release-focal.deb
 #apt install /tmp/puppet7-release-focal.deb -y
