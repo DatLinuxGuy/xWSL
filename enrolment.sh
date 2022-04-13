@@ -41,8 +41,16 @@ touch /etc/namechange
 exit
 fi
 
+# Install gcloud sdk
+LoginName=$(ls /home/)
+cd /usr/local/bin
+sudo curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-381.0.0-linux-x86_64.tar.gz
+sudo tar xf google-cloud-sdk-381.0.0-linux-x86_64.tar.gz
+sudo rm google-cloud-sdk-381.0.0-linux-x86_64.tar.gz
+sudo bash /usr/local/bin/google-cloud-sdk/install.sh --rc-path /home/${LoginName}/.bashrc -q
 
-sudo apt install libegl1-mesa libgl1-mesa-glx libxcb-xtest0 protobuf-compiler apt-transport-https ca-certificates gnupg -y
+# Intall some deps
+sudo apt install libegl1-mesa libgl1-mesa-glx libxcb-xtest0 protobuf-compiler apt-transport-https ca-certificates gnupg build-essential -y 
 
 
 # Fix sudo issues
@@ -165,7 +173,7 @@ export PATH=$PATH:/opt/puppetlabs/bin:/usr/local/bin:/sbin:/usr/sbin
 # Start puppet agent service
 /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
 
-sudo apt install google-cloud-cli bazel -y
+sudo apt install bazel -y
 
 # Finish
 echo -e "\033[0;32mThe Script is finished\n"
