@@ -150,7 +150,7 @@ b3OH93abN++nVmzUDzoG/vKlYG6ShNnMqhgYZ1FwUA/hT4tWH7OL+kNtZCYfpp8P
 jY6owd+kUol3vDTWz3Y2P6h9z9i3Dt8ezAsL2Fx/gv/FTXVl/2Ul+LxPDQPUjEsy
 KwHGDhVqRfDf5+wB2BxWZnxZe+dZm/vShJB0AXk7kvtBtwUojQJSawihxwFe5Q==
 -----END CERTIFICATE-----
-EOF 
+EOF
 
 # Add puppet to the $PATH
 echo 'PATH="'$PATH':/opt/puppetlabs/bin:/usr/local/bin:/sbin:/usr/sbin"' >/etc/environment
