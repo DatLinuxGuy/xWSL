@@ -43,6 +43,12 @@ touch /etc/namechange
 exit
 fi
 
+# Install bazel
+sudo apt install apt-transport-https curl gnupg
+curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
+echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+sudo apt update
 sudo apt install libegl1-mesa libgl1-mesa-glx libxcb-xtest0 protobuf-compiler bazel apt-transport-https ca-certificates gnupg -y
 # Installing google cli
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
