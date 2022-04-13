@@ -2,7 +2,7 @@
 
 # Make sure user is created properly
 if [ "$(ls /home/)" ]; then
-  echo 'user exists'
+  echo ''
 else exit
 fi
 
@@ -37,25 +37,22 @@ enabled = true
 appendWindowsPath = true
 EOF
 mv /tmp/wsl.conf /etc/wsl.conf
-#echo "In 10 seconds the WSL image will now shutdown. You MUST wait 10 seconds before running WSL again. This will allow enough time for the hostname to change"
 touch /etc/namechange
-echo "WHEN YOU ARE IN WSL PLEASE RUN"
-ECHO "sudo bash /usr/local/bin/enrolment.sh"
-echo "TO FINISH INSTALLATION"
-#sleep 10
-#wsl.exe shutdown
+# sleep 10
+# wsl.exe shutdown
 exit
 fi
 
-sudo apt install libegl1-mesa libgl1-mesa-glx libxcb-xtest0 -y
+sudo apt install libegl1-mesa libgl1-mesa-glx libxcb-xtest0 protobuf-compiler bazel apt-transport-https ca-certificates gnupg -y
+# Installing google cli
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+sudo apt-get update && sudo apt-get install google-cloud-cli -y
 
+# Fix sudo issues
+username=$(ls /home/)
+sudo sed -i "s/sudo:x:27:/sudo:x:27:$username,it/g" /etc/group
 
-# install puppet 
-#wget http://apt.puppetlabs.com/puppet7-release-focal.deb -O /tmp/puppet7-release-focal.deb
-#apt install /tmp/puppet7-release-focal.deb -y
-#apt update
-#apt install puppet-agent -y
-#sleep 5
 
 # Set hostname and gather facts
 serial_number=$(shuf -i 0-10000 -n 1)
@@ -157,14 +154,7 @@ b3OH93abN++nVmzUDzoG/vKlYG6ShNnMqhgYZ1FwUA/hT4tWH7OL+kNtZCYfpp8P
 jY6owd+kUol3vDTWz3Y2P6h9z9i3Dt8ezAsL2Fx/gv/FTXVl/2Ul+LxPDQPUjEsy
 KwHGDhVqRfDf5+wB2BxWZnxZe+dZm/vShJB0AXk7kvtBtwUojQJSawihxwFe5Q==
 -----END CERTIFICATE-----
-EOF
-
-
-# Install google SDK
-# bash /usr/local/bin/google-cloud-sdk/install.sh --rc-path /home/${LoginName}/.bashrc -q
-
-# Install flatpak
-# flatpak install flathub com.jetbrains.CLion -y 
+EOF 
 
 # Add puppet to the $PATH
 echo 'PATH="'$PATH':/opt/puppetlabs/bin:/usr/local/bin:/sbin:/usr/sbin"' >/etc/environment
@@ -174,10 +164,12 @@ export PATH=$PATH:/opt/puppetlabs/bin:/usr/local/bin:/sbin:/usr/sbin
 /opt/puppetlabs/bin/puppet agent -t --waitforcert=120
 
 #Running second time to ensure is all set...
-opt/puppetlabs/bin/puppet agent -t
+/opt/puppetlabs/bin/puppet agent -t
 
 # Start puppet agent service
 /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
 
 # Finish
 echo -e "\033[0;32mThe Script is finished\n"
+
+wsl.exe --shutdown
